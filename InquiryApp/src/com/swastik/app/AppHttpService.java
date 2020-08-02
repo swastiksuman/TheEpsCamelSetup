@@ -13,6 +13,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import com.swastik.app.dto.searchuser.MyApp;
+import com.swastik.app.processor.SearchUserProcessor;
 
 /**
  * Servlet implementation class AppHttpService
@@ -32,15 +33,7 @@ public class AppHttpService extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-			JAXBContext jContext = JAXBContext.newInstance(MyApp.class);
-			Unmarshaller unmarshallerObj = jContext.createUnmarshaller();
-			MyApp myApp = (MyApp)unmarshallerObj.unmarshal(request.getInputStream());
-			System.out.println(myApp.getRequest().getSearchCriteria().getName());
-		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		out.print("<html><h1>Hello</h1></html>");
@@ -50,8 +43,17 @@ public class AppHttpService extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		String responseXML = null;
+		switch(request.getHeader("SERVICENAME")) {
+		case "SEARCHUSER":
+			responseXML = SearchUserProcessor.process(request.getInputStream());
+			
+		}
+		
+		System.out.println(responseXML);
+		response.setContentType("application/xml");
+		PrintWriter out = response.getWriter();
+		out.print(responseXML);
 	}
 
 }
