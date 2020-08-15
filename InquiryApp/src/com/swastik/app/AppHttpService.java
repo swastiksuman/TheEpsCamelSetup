@@ -33,7 +33,7 @@ public class AppHttpService extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		System.out.println("+++++++");
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		out.print("<html><h1>Hello</h1></html>");
