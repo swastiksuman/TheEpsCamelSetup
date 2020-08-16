@@ -30,6 +30,8 @@ public class InquiryServiceRouting extends RouteBuilder {
 				.get().description("Find all users").outType(User[].class).responseMessage().code(200)
 				.message("All users successfully returned").endResponseMessage()
 				.to("bean:userService?method=findUsers");
+		rest("/google").description("Google").get().responseMessage().code(200).message("google").endResponseMessage()
+				.to("http:localhost:8080/InquiryApp/AppHttpService?bridgeEndpoint=true");
 
 	}
 
