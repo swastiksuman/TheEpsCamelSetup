@@ -7,3 +7,11 @@
         ImageId: ami-02354e95b39ca8dec
         InstanceType: t2.micro
         KeyName: macOS-key
+        SecurityGroupIds: [ sg-8ea365c6 ]
+
+    NewVolume:
+      Type: AWS::EC2::Volume
+      Properties:
+        Size: 5
+        VolumeType: gp2
+        AvailabilityZone: us-east-1a
