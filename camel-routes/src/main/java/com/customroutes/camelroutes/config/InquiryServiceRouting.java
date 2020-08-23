@@ -21,17 +21,23 @@ public class InquiryServiceRouting extends RouteBuilder {
 
 	@Override
 	public void configure() throws Exception {
-		restConfiguration().component("servlet").bindingMode(RestBindingMode.json)
-				.dataFormatProperty("prettyPrint", "true").enableCORS(true).port(env.getProperty("server.port", "8080"))
+		restConfiguration().component("servlet").bindingMode(RestBindingMode.auto)
+				.enableCORS(true).port(env.getProperty("server.port", "8080"))
 				.contextPath(contextPath.substring(0, contextPath.length() - 2));
 				
-		rest("/users").description("User REST service").consumes("application/json").produces("application/json")
-
-				.get().description("Find all users").outType(User[].class).responseMessage().code(200)
-				.message("All users successfully returned").endResponseMessage()
-				.to("bean:userService?method=findUsers");
-		rest("/google").description("Google").get().responseMessage().code(200).message("google").endResponseMessage()
+		/*
+		 * rest("/users").description("User REST service").consumes("application/json").
+		 * produces("application/json")
+		 * 
+		 * .get().description("Find all users").outType(User[].class).responseMessage().
+		 * code(200) .message("All users successfully returned").endResponseMessage()
+		 * .to("bean:userService?method=findUsers");
+		 */
+		rest("/getallusers").description("getUsers").get().responseMessage().code(200).message("google").endResponseMessage()
 				.to("http:localhost:8080/InquiryApp/AppHttpService?bridgeEndpoint=true");
+		
+		rest("/getuser").post().type(String.class).consumes("application/xml").description("postUser").responseMessage().code(200).message("done").endResponseMessage()
+				.to("http:localhost:8080/InquiryApp/AppHttpService?bridgeEndpoint=true").produces("application/xml");
 
 	}
 
