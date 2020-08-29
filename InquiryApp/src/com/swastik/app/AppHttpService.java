@@ -44,6 +44,7 @@ public class AppHttpService extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String responseXML = null;
+		System.out.println(request);
 		switch(request.getHeader("SERVICENAME")) {
 		case "SEARCHUSER":
 			responseXML = SearchUserProcessor.process(request.getInputStream());
