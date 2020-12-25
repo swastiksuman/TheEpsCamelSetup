@@ -2,12 +2,18 @@ package com.swastik.app;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -21,7 +27,9 @@ import com.swastik.app.processor.SearchUserProcessor;
 @WebServlet("/AppHttpService")
 public class AppHttpService extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	
+	@Resource(name = "jdbc/EPS_DB")
+	private DataSource dataSource;
     /**
      * Default constructor. 
      */
@@ -33,8 +41,20 @@ public class AppHttpService extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("+++++++");
+		System.out.println("+++++++SS");
 		response.setContentType("text/html");
+		try {
+			Connection c = dataSource.getConnection();
+			Statement s = c.createStatement();
+			ResultSet r = s.executeQuery("SELECT * FROM PROCESS_MESSAGES");
+			while(r.next()) {
+				System.out.println(r.getString("STATUS"));
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		PrintWriter out = response.getWriter();
 		out.print("<html><h1>Hello</h1></html>");
 	}
