@@ -27,50 +27,40 @@ import com.swastik.app.processor.SearchUserProcessor;
 @WebServlet("/AppHttpService")
 public class AppHttpService extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
-	@Resource(name = "jdbc/EPS_DB")
-	private DataSource dataSource;
-    /**
-     * Default constructor. 
-     */
-    public AppHttpService() {
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * Default constructor.
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public AppHttpService() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		System.out.println("+++++++SS");
 		response.setContentType("text/html");
-		try {
-			Connection c = dataSource.getConnection();
-			Statement s = c.createStatement();
-			ResultSet r = s.executeQuery("SELECT * FROM PROCESS_MESSAGES");
-			while(r.next()) {
-				System.out.println(r.getString("STATUS"));
-			}
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		PrintWriter out = response.getWriter();
 		out.print("<html><h1>Hello</h1></html>");
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String responseXML = null;
 		System.out.println(request);
-		switch(request.getHeader("SERVICENAME")) {
+		switch (request.getHeader("SERVICENAME")) {
 		case "SEARCHUSER":
 			responseXML = SearchUserProcessor.process(request.getInputStream());
-			
+
 		}
-		
+
 		System.out.println(responseXML);
 		response.setContentType("application/xml");
 		PrintWriter out = response.getWriter();
