@@ -19,6 +19,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import com.swastik.app.dto.searchuser.MyApp;
+import com.swastik.app.jms.MyJMSFactory;
 import com.swastik.app.processor.SearchUserProcessor;
 
 /**
@@ -42,6 +43,8 @@ public class AppHttpService extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		System.out.println("+++++++SS");
+		MyJMSFactory jmsFactory = new MyJMSFactory();
+		jmsFactory.postAMessage();
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		out.print("<html><h1>Hello</h1></html>");
